@@ -81,5 +81,33 @@ function PlayState:updateCamera()
 end
 
 function PlayState:spawnEnemies()
-	
+	for x = 1, self.tileMap.width do
+		local groundFound = false
+
+		for y = 1, self.tileMap.height do
+			if not groundFound then
+				if self.tileMap.tiles[y][x].id == TILE_ID_GROUND then
+					groundFound = true
+
+					if math.random(20) == 1 then
+						local snail
+						snail = Snail{
+							texture = 'creatures',
+							x = (x - 1) * TILE_SIZE,
+							y = (y - 2) * TILE_SIZE + 2,
+							width = 16, height = 16,
+							stateMachine = StateMachine {
+								['idle'] = function() return SnailIdleState(self.tileMap, self.player, snail) end
+							}
+						}
+						snail:changeState('idle', {
+							wait = math.random(5)
+						})
+
+						table.insert(self.level.entities, snail)
+					end
+				end
+			end
+		end
+	end
 end

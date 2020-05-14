@@ -90,29 +90,29 @@ function LevelMaker.generate(width, height)
 
 						if not obj.hit then
 							if math.random(5) == 1 then
-				-- 				local gem = GameObject {
-				-- 					texture = 'gems',
-				-- 					x = (x - 1) * TILE_SIZE,
-				-- 					y = (blockHeight - 1) * TILE_SIZE - 4,
-				-- 					width = 16,
-				-- 					height = 16,
-				-- 					frame = math.random(#GEMS),
-				-- 					collidable = true,
-				-- 					consumable = true,
-				-- 					solid = false,
+								local gem = GameObject {
+									texture = 'gems',
+									x = (x - 1) * TILE_SIZE,
+									y = (blockHeight - 1) * TILE_SIZE - 4,
+									width = 16,
+									height = 16,
+									frame = math.random(#GEMS),
+									collidable = true,
+									consumable = true,
+									solid = false,
 
-				-- 					onConsume = function(player, object)
-				-- 						gSounds['pickup']:play()
-				-- 						player.score = player.score + 100
-				-- 					end
-				-- 				}
+									onConsume = function(player, object)
+										gSounds['pickup']:play()
+										player.score = player.score + 100
+									end
+								}
 
-				-- 				Timer.tween(0.1, {
-				-- 					[gem] = {y = (blockHeight - 2) * TILE_SIZE}
-				-- 				})
-				-- 				gSounds['powerup-reveal']:play()
+								Timer.tween(0.1, {
+									[gem] = {y = (blockHeight - 2) * TILE_SIZE}
+								})
+								gSounds['powerup-reveal']:play()
 
-				-- 				table.insert(objects, gem)
+								table.insert(objects, gem)
 							end
 
 							obj.hit = true

@@ -21,6 +21,7 @@ require 'src/states/entity/PlayerJumpState'
 require 'src/states/entity/PlayerWalkingState'
 
 --snail
+require 'src/states/entity/snail/SnailIdleState'
 
 -- general
 require 'src/Animation'
@@ -29,6 +30,7 @@ require 'src/GameObject'
 require 'src/GameLevel'
 require 'src/LevelMaker'
 require 'src/Player'
+require 'src/Snail'
 require 'src/Tile'
 require 'src/TileMap'
 
