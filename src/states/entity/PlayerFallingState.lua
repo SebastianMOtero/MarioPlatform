@@ -30,5 +30,18 @@ function PlayerFallingState:update(dt)
 		end
 
 		self.player.y = (tileBottomLeft.y -1) * TILE_SIZE - self.player.height
+	elseif self.player.y > VIRTUAL_HEIGHT then
+		gSounds['death']:play()
+		gStateMachine:change('start')
+	elseif love.keyboard.isDown('left') then
+		self.player.direction = 'left'
+		self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
+		self.player:checkLeftCollisions(dt)
+	elseif love.keyboard.isDown('right') then
+		self.player.direction = 'right'
+		self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
+		self.player:checkRightCollisions(dt)
 	end
+
+	-- TODO OBJECTS Y ENTIDADES
 end

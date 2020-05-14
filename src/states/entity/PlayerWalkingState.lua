@@ -19,12 +19,27 @@ function PlayerWalkingState:update(dt)
 
 		local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
 
-		if love.keyboard.isDown('left') then
+		self.player.y = self.player.y + 1
+
+		local collidedObjects = self.player:checkObjectCollisions()
+
+		self.player.y = self.player.y - 1
+
+		if #collidedObjects == 0 and (tileBottomLeft and tileBottomRight) and (not tileBottomLeft:collidable() and not tileBottomRight:collidable()) then
+			self.player.dy = 0
+			self.player:changeState('falling') 
+		elseif love.keyboard.isDown('left') then
 			self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
 			self.player.direction = 'left'
+			self.player:checkLeftCollisions(dt)
 		elseif love.keyboard.isDown('right') then
 			self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
 			self.player.direction = 'right'
+			self.player:checkRightCollisions(dt)
 		end
+	end
+
+	if love.keyboard.wasPressed('space') then
+		self.player:changeState('jump')
 	end
 end

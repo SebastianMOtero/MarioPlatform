@@ -18,11 +18,14 @@ function PlayState:init()
 		stateMachine = StateMachine {
 			['idle'] = function() return PlayerIdleState(self.player) end,
 			['walking'] = function() return PlayerWalkingState(self.player) end,
+			['jump'] = function() return PlayerJumpState(self.player, self.gravityAmount) end,
 			['falling'] = function() return PlayerFallingState(self.player, self.gravityAmount) end
 		},
 		map = self.tileMap,
 		level = self.level
 	})
+
+	self:spawnEnemies()
 
 	self.player:changeState('falling')
 end
@@ -34,7 +37,7 @@ function PlayState:update(dt)
 
 	self.player:update(dt)
 	self.level:update(dt)
-	self.updateCamera()
+	self:updateCamera()
 
 	if self.player.x <= 0 then
 		self.player.x = 0
@@ -70,7 +73,13 @@ function PlayState:render()
 end
 
 function PlayState:updateCamera()
-	-- self.camX = math.max(0, math.min(TILE_SIZE * self.tileMap.width - VIRTUAL_WIDTH, self.player.x - (VIRTUAL_WIDTH / 2 - 8)))
+	self.camX = math.max(0,
+		math.min(TILE_SIZE * self.tileMap.width - VIRTUAL_WIDTH,
+		self.player.x - (VIRTUAL_WIDTH / 2 - 8)))
 
-	-- self.backgroundX = (self.camX / 3) % VIRTUAL_WIDTH
+	self.backgroundX = (self.camX / 3) % VIRTUAL_WIDTH
+end
+
+function PlayState:spawnEnemies()
+	
 end
