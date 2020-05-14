@@ -20,12 +20,12 @@ function SnailIdleState:update(dt)
 	if self.waitTimer < self.waitPeriod then
 		self.waitTimer = self.waitTimer + dt
 	else
-		-- self.snail:changeState('moving')
+		self.snail:changeState('moving')
 	end
 
 	local diffX = math.abs(self.player.x - self.snail.x)
 
 	if diffX < 5 * TILE_SIZE then
-		-- self.snail:changeState('chasing')
+		self.snail:changeState('chasing')
 	end
 end

@@ -97,7 +97,9 @@ function PlayState:spawnEnemies()
 							y = (y - 2) * TILE_SIZE + 2,
 							width = 16, height = 16,
 							stateMachine = StateMachine {
-								['idle'] = function() return SnailIdleState(self.tileMap, self.player, snail) end
+								['idle'] = function() return SnailIdleState(self.tileMap, self.player, snail) end,
+								['moving'] = function() return SnailMovingState(self.tileMap, self.player, snail) end,
+								['chasing'] = function() return SnailChasingState(self.tileMap, self.player, snail) end
 							}
 						}
 						snail:changeState('idle', {

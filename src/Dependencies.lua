@@ -22,6 +22,8 @@ require 'src/states/entity/PlayerWalkingState'
 
 --snail
 require 'src/states/entity/snail/SnailIdleState'
+require 'src/states/entity/snail/SnailMovingState'
+require 'src/states/entity/snail/SnailChasingState'
 
 -- general
 require 'src/Animation'
