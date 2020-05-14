@@ -39,86 +39,89 @@ function LevelMaker.generate(width, height)
 				table.insert(tiles[y], Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
 			end
 
-			-- if math.random(8) == 1 then
-			-- 	-- blockHeight = 2
+			--pillar
+			if math.random(8) == 1 then
+				blockHeight = 1
 
-			-- 	-- if math.random(8) == 1 then
-			-- 	-- 	table.insert(objects, GameObject {
-			-- 	-- 		texture = 'bushes',
-			-- 	-- 		x = (x - 1) * TILE_SIZE,
-			-- 	-- 		y = (4 - 1) * TILE_SIZE,
-			-- 	-- 		width = 16,
-			-- 	-- 		height = 16,
-			-- 	-- 		frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
-			-- 	-- 		collidable = false
-			-- 	-- 	})
-			-- 	-- end
+				--bush on pillar
+				if math.random(8) == 1 then
+					table.insert(objects, GameObject {
+						texture = 'bushes',
+						x = (x - 1) * TILE_SIZE,
+						y = (4 - 1) * TILE_SIZE,
+						width = 16,
+						height = 16,
+						frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
+						collidable = false
+					})
+				end
 
-			-- 	-- tiles[5][x] = Tile(x, 5, tileID, topper, tileset, topperset)
-			-- 	-- tiles[6][x] = Tile(x, 6, tileID, nil, tileset, topperset)
-			-- 	-- tiles[7][x].topper = nil
+				tiles[5][x] = Tile(x, 5, tileID, topper, tileset, topperset)
+				tiles[6][x] = Tile(x, 6, tileID, nil, tileset, topperset)
+				tiles[7][x].topper = nil
+			
+			--bush on ground
+			elseif math.random(8) == 1 then 
+				table.insert(objects, GameObject {
+					texture = 'bushes',
+					x = (x - 1) * TILE_SIZE,
+					y = (6 - 1) * TILE_SIZE,
+					width = 16,
+					height = 16,
+					frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
+					collidable = false
+				})
+			end
 
-			-- elseif math.random(8) == 1 then 
-			-- 	-- table.insert(objects, GameObject {
-			-- 	-- 	texture = 'bushes',
-			-- 	-- 	x = (x - 1) * TILE_SIZE,
-			-- 	-- 	y = (6 - 1) * TILE_SIZE,
-			-- 	-- 	width = 16,
-			-- 	-- 	height = 16,
-			-- 	-- 	frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
-			-- 	-- 	collidable = false
-			-- 	-- })
-			-- end
+			--spawn a block
+			if math.random(10) == 1 then
+				table.insert(objects, GameObject {
+					texture = 'jump-blocks',
+					x = (x - 1) * TILE_SIZE,
+					y = (blockHeight - 1) * TILE_SIZE,
+					width = 16,
+					height = 16,
+					frame = math.random(#JUMP_BLOCKS),
+					collidable = true,
+					hit = false,
+					solid = true,
 
-			-- if math.random(10) == 1 then
-			-- 	-- table.insert(objects, GameObject {
-			-- 	-- 	texture = 'jump-blocks',
-			-- 	-- 	x = (x - 1) * TILE_SIZE,
-			-- 	-- 	y = (blockHeight - 1) * TILE_SIZE,
-			-- 	-- 	width = 16,
-			-- 	-- 	height = 16,
+					onCollide = function(obj)
 
-			-- 	-- 	frame = math.random(#JUMP_BLOCKS),
-			-- 	-- 	collidable = true,
-			-- 	-- 	hit = false,
-			-- 	-- 	solid = true,
+						if not obj.hit then
+							if math.random(5) == 1 then
+				-- 				local gem = GameObject {
+				-- 					texture = 'gems',
+				-- 					x = (x - 1) * TILE_SIZE,
+				-- 					y = (blockHeight - 1) * TILE_SIZE - 4,
+				-- 					width = 16,
+				-- 					height = 16,
+				-- 					frame = math.random(#GEMS),
+				-- 					collidable = true,
+				-- 					consumable = true,
+				-- 					solid = false,
 
-			-- 	-- 	onCollide = function(obj)
+				-- 					onConsume = function(player, object)
+				-- 						gSounds['pickup']:play()
+				-- 						player.score = player.score + 100
+				-- 					end
+				-- 				}
 
-			-- 	-- 		if not obj.hit then
-			-- 	-- 			if math.random(5) == 1 then
-			-- 	-- 				local gem = GameObject {
-			-- 	-- 					texture = 'gems',
-			-- 	-- 					x = (x - 1) * TILE_SIZE,
-			-- 	-- 					y = (blockHeight - 1) * TILE_SIZE - 4,
-			-- 	-- 					width = 16,
-			-- 	-- 					height = 16,
-			-- 	-- 					frame = math.random(#GEMS),
-			-- 	-- 					collidable = true,
-			-- 	-- 					consumable = true,
-			-- 	-- 					solid = false,
+				-- 				Timer.tween(0.1, {
+				-- 					[gem] = {y = (blockHeight - 2) * TILE_SIZE}
+				-- 				})
+				-- 				gSounds['powerup-reveal']:play()
 
-			-- 	-- 					onConsume = function(player, object)
-			-- 	-- 						gSounds['pickup']:play()
-			-- 	-- 						player.score = player.score + 100
-			-- 	-- 					end
-			-- 	-- 				}
+				-- 				table.insert(objects, gem)
+							end
 
-			-- 	-- 				Timer.tween(0.1, {
-			-- 	-- 					[gem] = {y = (blockHeight - 2) * TILE_SIZE}
-			-- 	-- 				})
-			-- 	-- 				gSounds['powerup-reveal']:play()
+							obj.hit = true
+						end
 
-			-- 	-- 				table.insert(objects, gem)
-			-- 	-- 			end
-
-			-- 	-- 			obj.hit = true
-			-- 	-- 		end
-
-			-- 	-- 		gSounds['empty-block']:play()
-			-- 	-- 	end
-			-- 	-- })
-			-- end
+						gSounds['empty-block']:play()
+					end
+				})
+			end
 		end
 	end
 

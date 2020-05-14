@@ -39,6 +39,13 @@ function PlayerWalkingState:update(dt)
 		end
 	end
 
+	for k, entity in pairs(self.player.level.entities) do
+		if entity:collides(self.player) then
+			gSounds['death']:play()
+			gStateMachine:change('start')
+		end
+	end
+	
 	if love.keyboard.wasPressed('space') then
 		self.player:changeState('jump')
 	end

@@ -42,8 +42,25 @@ function PlayerJumpState:update(dt)
 		self.player:checkRightCollisions(dt)
 	end
 
-	--TO DO 
-	--COLLIDES OBJECTS
+	for k, object in pairs(self.player.level.objects) do
+		if object:collides(self.player) then
+			if object.solid then
+				object.onCollide(object)
 
-	--COLLIDES ENTITIES
+				self.player.y = object.y + object.height
+				self.player.dy = 0
+				self.player:changeState('falling')
+			elseif object.consumable then
+				object.onConsume(self.player)
+				table.remove(self.player.level.objects, k)
+			end
+		end
+	end
+
+	for k, entity in pairs(self.player.level.entities) do
+		if entity:collides(self.player) then
+			gSounds['death']:play()
+			gStateMachine:change('start')
+		end
+	end
 end
