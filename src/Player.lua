@@ -56,9 +56,9 @@ function Player:checkObjectCollisions()
 				table.insert(collidedObjects, object)
 			elseif object.consumable then
 				object.onConsume(self)
-				table.remove(self.level.object, k)
+				table.remove(self.level.objects, k)
 			end
-		end	
+		end
 	end
 
 	return collidedObjects

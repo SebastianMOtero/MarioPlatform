@@ -1,9 +1,13 @@
 PlayState = Class{__includes = BaseState}
 
+local auxIzq = 0
+local auxDer = 0
+local boolAux = false
+
 function PlayState:init()
 	self.camX = 0
 	self.camY = 0
-	self.level = LevelMaker.generate(100, 10)
+	self.level = LevelMaker.generate(100, 12)
 	self.tileMap = self.level.tileMap
 	self.background = math.random(3)
 	self.backgroundX = 0
@@ -44,6 +48,18 @@ function PlayState:update(dt)
 	elseif self.player.x > TILE_SIZE * self.tileMap.width - self.player.width then
 		self.player.x = TILE_SIZE * self.tileMap.width - self.player.width
 	end
+
+	--aux = self.tileMap:pointToTile(self.player.x + 1, self.player.y + self.player.height).collidable
+	auxIzq = self.tileMap:pointToTile(self.player.x + 1, self.player.y + self.player.height)
+	auxDer = self.tileMap:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
+	--auxDer = auxDer.collidable()
+	aux1 = self.tileMap:pointToTile(self.player.x + 1, self.player.y + self.player.height) 
+	aux2 = self.tileMap:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
+	if (auxIzq and {}) then
+		boolAux = true
+	else
+		boolAux = false
+	end
 end
 
 function PlayState:render()
@@ -70,6 +86,15 @@ function PlayState:render()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(tostring(self.player.score), 4, 4)
 
+	love.graphics.setFont(gFonts['medium'])
+	love.graphics.setColor(1, 1, 1, 1)
+
+	--TEST TO Do
+	love.graphics.setFont(gFonts['small'])
+	love.graphics.print(tostring(auxIzq), 100, 5)
+	love.graphics.print(tostring(auxDer), 100, 15)
+	love.graphics.print(tostring(boolAux), 120, 25)
+
 end
 
 function PlayState:updateCamera()
@@ -81,15 +106,15 @@ function PlayState:updateCamera()
 end
 
 function PlayState:spawnEnemies()
-	for x = 1, self.tileMap.width do
+	for x = 2, self.tileMap.width-1 do
 		local groundFound = false
 
 		for y = 1, self.tileMap.height do
 			if not groundFound then
-				if self.tileMap.tiles[y][x].id == TILE_ID_GROUND then
+				if self.tileMap.tiles[y][x].topper == true and self.tileMap.tiles[y][x-1].topper == true and self.tileMap.tiles[y][x+1].topper == true then
 					groundFound = true
 
-					if math.random(20) == 1 then
+					if math.random(5) == 1 then
 						local snail
 						snail = Snail{
 							texture = 'creatures',

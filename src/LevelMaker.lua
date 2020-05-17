@@ -8,8 +8,10 @@ function LevelMaker.generate(width, height)
 	local tileID = TILE_ID_GROUND
 
 	local topper = true
-	local tileset = math.random(20)
-	local topperset = math.random(20)
+	local tileset = math.random(60)
+	local topperset = math.random(108)
+
+	groundLevel = 7
 
 	for x = 1, height do
 		table.insert(tiles, {})
@@ -19,36 +21,45 @@ function LevelMaker.generate(width, height)
 		local tileID = TILE_ID_EMPTY
 
 		--empty space, sky
-		for y = 1, 6 do
-			table.insert(tiles[y], Tile(x, y, tileID, nil, tileset, topperset))
+		for y = 1, groundLevel-1 do
+			table.insert(tiles[y], Tile(x, y, tileID, false, tileset, topperset))
 		end
 
-		-- no ground
-		if math.random(7) == 1 then
-			for y = 7, height do
-				table.insert(tiles[y], Tile(x, y, tileID, nil, tileset, topperset))
+		-- add no ground if the previous is ground and then no ground
+		if x > 2 and tiles[10][x-2]:collidable() and not tiles[10][x-1]:collidable() then
+			for y = groundLevel, height do
+				table.insert(tiles[y], Tile(x, y, tileID, false, tileset, topperset))
 			end
+		
+		-- no ground
+		elseif math.random(7) == 1 then
+			for y = groundLevel, height do
+				table.insert(tiles[y], Tile(x, y, tileID, false, tileset, topperset))
+			end
+
 		-- generate ground
 		else
 			tileID = TILE_ID_GROUND
 
-			local blockHeight = 4
+			local blockHeight = groundLevel - 3
 
 			--fill up with ground
-			for y = 7, height do
-				table.insert(tiles[y], Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
+			for y = groundLevel, height do
+				table.insert(tiles[y], Tile(x, y, tileID, y == groundLevel and topper or false, tileset, topperset))
 			end
-
+			
 			--pillar
-			if math.random(8) == 1 then
-				blockHeight = 1
+			if math.random(8) == 1 and groundLevel > 5 then
+				if blockHeight - 2 > 1 then
+					blockHeight = blockHeight - 2
+				end
 
 				--bush on pillar
 				if math.random(8) == 1 then
 					table.insert(objects, GameObject {
 						texture = 'bushes',
 						x = (x - 1) * TILE_SIZE,
-						y = (4 - 1) * TILE_SIZE,
+						y = (groundLevel - 4) * TILE_SIZE,
 						width = 16,
 						height = 16,
 						frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
@@ -56,16 +67,16 @@ function LevelMaker.generate(width, height)
 					})
 				end
 
-				tiles[5][x] = Tile(x, 5, tileID, topper, tileset, topperset)
-				tiles[6][x] = Tile(x, 6, tileID, nil, tileset, topperset)
-				tiles[7][x].topper = nil
+				tiles[groundLevel-2][x] = Tile(x, groundLevel-2, tileID, topper, tileset, topperset)
+				tiles[groundLevel-1][x] = Tile(x, groundLevel-1, tileID, false, tileset, topperset)
+				tiles[groundLevel][x].topper = false
 			
-			--bush on ground
+			-- --bush on ground
 			elseif math.random(8) == 1 then 
 				table.insert(objects, GameObject {
 					texture = 'bushes',
 					x = (x - 1) * TILE_SIZE,
-					y = (6 - 1) * TILE_SIZE,
+					y = (groundLevel - 2) * TILE_SIZE,
 					width = 16,
 					height = 16,
 					frame = BUSH_IDS[math.random(#BUSH_IDS)] + (math.random(4) - 1) * 7,
@@ -122,6 +133,12 @@ function LevelMaker.generate(width, height)
 					end
 				})
 			end
+			if math.random(10) == 1 and groundLevel < 9 then
+				groundLevel = groundLevel + 1
+			elseif math.random(10) == 9 and groundLevel > 4 then
+				groundLevel = groundLevel - 1
+			end
+			
 		end
 	end
 

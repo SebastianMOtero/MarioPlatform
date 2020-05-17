@@ -69,4 +69,8 @@ function PlayerFallingState:update(dt)
 			table.remove(self.player.level.entities, k)
 		end
 	end
+
+	if love.keyboard.wasPressed('space') and self.player.dy < 25 then
+		self.player:changeState('jump')
+	end
 end

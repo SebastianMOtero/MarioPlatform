@@ -23,6 +23,24 @@ function Tile:collidable(target)
 	return false
 end
 
+function Tile:hasTopper() 
+	return not self.topper == nil
+end
+
+function Tile:offsetRight(playerX)
+	if (self.x * self.width) - playerX <= 6 then
+		return true
+	end
+	return false
+end
+
+function Tile:offsetLeft(playerX)
+	if (self.x * self.width) - self.width - playerX >= 10 then
+		return true
+	end
+	return false
+end
+
 function Tile:render()
 	love.graphics.draw(gTextures['tiles'], gFrames['tilesets'][self.tileset][self.id], (self.x - 1) * TILE_SIZE, (self.y - 1) * TILE_SIZE)
 

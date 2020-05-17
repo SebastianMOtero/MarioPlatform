@@ -32,14 +32,30 @@ function PlayerJumpState:update(dt)
 	if (tileLeft and tileRight) and (tileLeft:collidable() or tileRight:collidable()) then
 		self.player.dy = 0
 		self.player:changeState('falling')
+	elseif love.keyboard.isDown('left') and love.keyboard.wasPressed('space') and self.player.dy > -25 then
+		gSounds['jump']:play()
+		self.player.dy = PLAYER_JUMP_VELOCITY 
+		
+		self.player.direction = 'left'
+		self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
+		self.player:checkLeftCollisions(dt)
 	elseif love.keyboard.isDown('left') then
 		self.player.direction = 'left'
 		self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
 		self.player:checkLeftCollisions(dt)
 	elseif love.keyboard.isDown('right') then
+		if love.keyboard.wasPressed('space') and self.player.dy > -25 then
+			gSounds['jump']:play()
+			self.player.dy = PLAYER_JUMP_VELOCITY 
+		end
 		self.player.direction = 'right'
 		self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
 		self.player:checkRightCollisions(dt)
+	end
+
+	if love.keyboard.wasPressed('space') and self.player.dy > -25 then
+		gSounds['jump']:play()
+		self.player.dy = PLAYER_JUMP_VELOCITY 
 	end
 
 	for k, object in pairs(self.player.level.objects) do
