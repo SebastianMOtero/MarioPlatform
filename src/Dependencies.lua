@@ -35,6 +35,7 @@ require 'src/Player'
 require 'src/Snail'
 require 'src/Tile'
 require 'src/TileMap'
+require 'src/Flag'
 
 gSounds = {
 	['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
@@ -62,7 +63,8 @@ gTextures = {
 	['bushes'] = love.graphics.newImage('graphics/bushes_and_cacti.png'),
 	['jump-blocks'] = love.graphics.newImage('graphics/jump_blocks.png'),
 	['gems'] = love.graphics.newImage('graphics/gems.png'),
-	['creatures'] = love.graphics.newImage('graphics/creatures.png')
+	['creatures'] = love.graphics.newImage('graphics/creatures.png'),
+	['flag'] = love.graphics.newImage('graphics/flags.png')
 }
 
 gFrames = {
@@ -73,9 +75,13 @@ gFrames = {
 	['bushes'] = GenerateQuads(gTextures['bushes'], 16, 16),
 	['jump-blocks'] = GenerateQuads(gTextures['jump-blocks'], 16, 16),
 	['gems'] = GenerateQuads(gTextures['gems'], 16, 16),
-	['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16)
+	['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
+	['flag'] = GenerateQuads(gTextures['flag'], 16, 16)
 }
 
 gFrames['tilesets'] = GenerateTileSets(gFrames['tiles'], TILE_SETS_WIDE, TILE_SETS_TALL, TILE_SET_WIDTH, TILE_SET_HEIGHT)
 
 gFrames['toppersets'] = GenerateTileSets(gFrames['toppers'], TOPPER_SETS_WIDE, TOPPER_SETS_TALL, TILE_SET_WIDTH, TILE_SET_HEIGHT)
+
+gFrames['flagFlying'] = GenerateFlyingFlag(gFrames['flag'])
+gFrames['flagpole'] = GenerateQuads(gTextures['flag'], 16, 48)

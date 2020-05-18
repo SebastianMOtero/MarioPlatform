@@ -23,7 +23,7 @@ end
 
 function GameLevel:update(dt)
 	self.tileMap:update(dt)
-
+	self.tileMap.flag:update(dt)
 	for k, object in pairs(self.objects) do
 		object:update(dt)
 	end
@@ -35,7 +35,7 @@ end
 
 function GameLevel:render()
 	self.tileMap:render()
-
+	self.tileMap.flag:render()
 	for k, object in pairs(self.objects) do
 		object:render()
 	end

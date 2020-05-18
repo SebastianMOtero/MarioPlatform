@@ -4,7 +4,7 @@ function LevelMaker.generate(width, height)
 	local tiles = {}
 	local entities = {}
 	local objects = {}
-
+	local flag
 	local tileID = TILE_ID_GROUND
 
 	local topper = true
@@ -26,13 +26,13 @@ function LevelMaker.generate(width, height)
 		end
 
 		-- add no ground if the previous is ground and then no ground
-		if x > 2 and tiles[10][x-2]:collidable() and not tiles[10][x-1]:collidable() then
+		if x > 3 and tiles[10][x-2]:collidable() and not tiles[10][x-1]:collidable() and x < width - 3 then
 			for y = groundLevel, height do
 				table.insert(tiles[y], Tile(x, y, tileID, false, tileset, topperset))
 			end
 		
 		-- no ground
-		elseif math.random(7) == 1 then
+		elseif math.random(7) == 1 and x > 3 and x < width - 3 then
 			for y = groundLevel, height do
 				table.insert(tiles[y], Tile(x, y, tileID, false, tileset, topperset))
 			end
@@ -48,8 +48,10 @@ function LevelMaker.generate(width, height)
 				table.insert(tiles[y], Tile(x, y, tileID, y == groundLevel and topper or false, tileset, topperset))
 			end
 			
+			if x == width - 2 then
+			end
 			--pillar
-			if math.random(8) == 1 and groundLevel > 5 then
+			if math.random(8) == 1 and x > 2 and groundLevel > 5 and x < width - 2 then
 				if blockHeight - 2 > 1 then
 					blockHeight = blockHeight - 2
 				end
@@ -85,7 +87,7 @@ function LevelMaker.generate(width, height)
 			end
 
 			--spawn a block
-			if math.random(10) == 1 then
+			if math.random(10) == 1 and x > 2 and x < width - 2 then
 				table.insert(objects, GameObject {
 					texture = 'jump-blocks',
 					x = (x - 1) * TILE_SIZE,
@@ -133,6 +135,19 @@ function LevelMaker.generate(width, height)
 					end
 				})
 			end
+
+			if x == width - 2 then
+				flag = Flag{
+					texture = 'flag',
+					x = (x - 1) * TILE_SIZE,
+					y = (groundLevel - 4) * TILE_SIZE - 0,
+					flag = math.random(4),
+					flagpole = math.random(6),
+					width = 16,
+					height = 48,
+				}
+			end
+
 			if math.random(10) == 1 and groundLevel < 9 then
 				groundLevel = groundLevel + 1
 			elseif math.random(10) == 9 and groundLevel > 4 then
@@ -144,6 +159,6 @@ function LevelMaker.generate(width, height)
 
 	local map = TileMap(width, height)
 	map.tiles = tiles
-	
+	map.flag = flag
 	return GameLevel(entities, objects, map)
 end

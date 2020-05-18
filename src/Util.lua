@@ -39,3 +39,17 @@ function GenerateTileSets(quads, setsX, setsY, sizeX, sizeY)
 
 	return tilesets
 end
+
+function GenerateFlyingFlag(quads)
+	local flagFlying = {}
+	local tableCounter = 0
+	for flagY = 1, 4 do
+		tableCounter = tableCounter + 1
+		table.insert(flagFlying, {})
+		for x = 7, 9 do
+			table.insert(flagFlying[tableCounter], quads[(flagY - 1) * 9 + x])
+		end
+	end
+
+	return flagFlying
+end
