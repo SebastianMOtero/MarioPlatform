@@ -73,4 +73,12 @@ function PlayerFallingState:update(dt)
 	if love.keyboard.wasPressed('space') and self.player.dy < 25 then
 		self.player:changeState('jump')
 	end
+
+	if self.player.map.flag:collides(self.player) then
+		gSounds['death']:play()
+		gStateMachine:change('play', {
+			levelState = self.player.levelState,
+			score = self.player.score + 500
+		})
+	end
 end

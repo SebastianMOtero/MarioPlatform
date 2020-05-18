@@ -140,7 +140,7 @@ function LevelMaker.generate(width, height)
 				flag = Flag{
 					texture = 'flag',
 					x = (x - 1) * TILE_SIZE,
-					y = (groundLevel - 4) * TILE_SIZE - 0,
+					y = (groundLevel - 4) * TILE_SIZE,
 					flag = math.random(4),
 					flagpole = math.random(6),
 					width = 16,

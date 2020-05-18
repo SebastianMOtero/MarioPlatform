@@ -17,6 +17,7 @@ function Entity:init(def)
 
 	self.map = def.map
 	self.level = def.level
+	self.levelState = def.levelState
 end
 
 function Entity:changeState(state, params)

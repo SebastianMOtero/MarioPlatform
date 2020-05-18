@@ -79,4 +79,12 @@ function PlayerJumpState:update(dt)
 			gStateMachine:change('start')
 		end
 	end
+
+	if self.player.map.flag:collides(self.player) then
+		gSounds['death']:play()
+		gStateMachine:change('play', {
+			levelState = self.player.levelState,
+			score = self.player.score + 500
+		})
+	end
 end
